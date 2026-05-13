@@ -307,8 +307,6 @@ class ExcipicTrainer:
             self.current_epoch = epoch + 1
             epoch_start = time.time()
 
-            logger.info(f"[Epoch {self.current_epoch}/{num_epochs}]", end=" ")
-
             # Train
             train_losses = self.train_epoch(train_loader)
             train_time = time.time() - epoch_start
