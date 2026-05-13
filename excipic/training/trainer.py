@@ -200,9 +200,13 @@ class ExcipicTrainer:
                 self.train_config.gradient_clip,
             )
 
+            prev_scale = self.scaler.get_scale()
             self.scaler.step(self.optimizer)
             self.scaler.update()
-            self.scheduler.step()
+            # With AMP, optimizer.step() can be skipped on overflow. Step LR only when
+            # optimizer update was applied to avoid scheduler-before-optimizer warnings.
+            if self.scaler.get_scale() >= prev_scale:
+                self.scheduler.step()
 
             # Track losses
             epoch_losses["total"] += total_loss.item()
