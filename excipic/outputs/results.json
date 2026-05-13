@@ -1,0 +1,29 @@
+{
+  "best_val_metrics": {},
+  "test_metrics": {
+    "ndcg_at_5": 0.0,
+    "recall_at_5": 0.0,
+    "hit_at_5": 0.0,
+    "jaccard_at_5": 0.0,
+    "ndcg_at_10": 0.0,
+    "recall_at_10": 0.0,
+    "hit_at_10": 0.0,
+    "jaccard_at_10": 0.0,
+    "ndcg_at_15": 0.0,
+    "recall_at_15": 0.0,
+    "hit_at_15": 0.0,
+    "jaccard_at_15": 0.0,
+    "mrr": 0.0,
+    "exact_match": 0.0,
+    "val_loss_total": 4.486770749092102,
+    "val_loss_ranking": 6.84944474697113,
+    "val_loss_bce": 1.1270780712366104,
+    "val_loss_property": 0.3898022100329399
+  },
+  "training_time_minutes": 1.9907373785972595,
+  "total_params": 67293461,
+  "trainable_params": 67293461,
+  "train_size": 100,
+  "val_size": 50,
+  "test_size": 50
+}

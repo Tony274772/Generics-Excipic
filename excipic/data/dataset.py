@@ -12,7 +12,6 @@ Each sample contains:
 import logging
 from typing import Any, Dict, List, Optional
 
-import numpy as np
 import torch
 from torch.utils.data import Dataset
 from torch_geometric.data import Data

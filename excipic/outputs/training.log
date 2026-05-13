@@ -200,3 +200,27 @@
 2026-05-13 12:30:07,824 [INFO] excipic.training.trainer: Starting training: 2 epochs, 12 total steps | Early stop patience: 10
 
 2026-05-13 12:30:40,136 [INFO] excipic.training.trainer: [Epoch 1/2] Loss: 4.0223 | 32.3s
+2026-05-13 12:31:09,328 [INFO] excipic.training.trainer: ✓ Val Summary | NDCG@10: 0.0000 | Recall@10: 0.0000 | Hit@10: 0.0000 | MRR: 0.0000 | Jaccard@10: 0.0000 | Val Time: 29.2s
+2026-05-13 12:31:09,328 [INFO] excipic.training.trainer: ⏱️  No improvement | Patience: 1/10 (9 epochs remaining before early stop)
+2026-05-13 12:31:09,328 [INFO] excipic.training.trainer: ⏱️  Estimated time remaining: 0.5 minutes (1 epochs × 32.3s avg)
+2026-05-13 12:31:38,996 [INFO] excipic.training.trainer: [Epoch 2/2] Loss: 3.5990 | 29.7s
+2026-05-13 12:32:07,267 [INFO] excipic.training.trainer: ✓ Val Summary | NDCG@10: 0.0000 | Recall@10: 0.0000 | Hit@10: 0.0000 | MRR: 0.0000 | Jaccard@10: 0.0000 | Val Time: 28.3s
+2026-05-13 12:32:07,268 [INFO] excipic.training.trainer: ⏱️  No improvement | Patience: 2/10 (8 epochs remaining before early stop)
+2026-05-13 12:32:07,268 [INFO] excipic.training.trainer: 
+════════════════════════════════════════════════════════════════════════════════
+2026-05-13 12:32:07,268 [INFO] excipic.training.trainer: ✅ TRAINING COMPLETE
+2026-05-13 12:32:07,268 [INFO] excipic.training.trainer:    Total Time: 1.0 minutes
+2026-05-13 12:32:07,268 [INFO] excipic.training.trainer:    Epochs Trained: 2/2
+2026-05-13 12:32:07,268 [INFO] excipic.training.trainer:    Best ndcg_at_10: 0.0000
+2026-05-13 12:32:07,268 [INFO] excipic.training.trainer: ════════════════════════════════════════════════════════════════════════════════
+
+2026-05-13 12:32:07,268 [INFO] excipic.train: 
+✓ Training completed in 2.0 minutes
+
+2026-05-13 12:32:07,517 [INFO] excipic.training.trainer: Loaded checkpoint from epoch 1: C:\Users\pardhu\Desktop\g2\excipic\outputs\checkpoints\best_model.pt
+2026-05-13 12:32:34,628 [INFO] excipic.train: Test metrics | NDCG@10: 0.0000 | Recall@10: 0.0000 | Hit@10: 0.0000
+2026-05-13 12:32:34,631 [INFO] excipic.train: Results saved to C:\Users\pardhu\Desktop\g2\excipic\outputs\results.json
+2026-05-13 12:32:34,631 [INFO] excipic.train: 
+============================================================
+2026-05-13 12:32:34,631 [INFO] excipic.train:   Training complete!
+2026-05-13 12:32:34,631 [INFO] excipic.train: ============================================================
