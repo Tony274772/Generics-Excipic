@@ -215,9 +215,6 @@ class ExcipicTrainer:
             batch_time = time.time() - batch_start
             batch_times.append(batch_time)
 
-            # Log with memory usage (only every 5 epochs or final step)
-            if (batch_idx + 1) % self.train_config.log_interval == 0:
-
         # Average losses
         for key in epoch_losses:
             epoch_losses[key] /= max(num_batches, 1)
