@@ -189,6 +189,19 @@ class ExcipicTrainer:
                     + self.w_prop * property_loss
                 )
 
+            if not torch.isfinite(total_loss):
+                logger.warning(
+                    "Skipping non-finite loss at epoch %d, batch %d: total=%s rank=%s bce=%s prop=%s",
+                    self.current_epoch + 1,
+                    batch_idx + 1,
+                    f"{total_loss.detach().item():.6f}",
+                    f"{ranking_loss.detach().item():.6f}",
+                    f"{bce_loss.detach().item():.6f}",
+                    f"{property_loss.detach().item():.6f}",
+                )
+                self.optimizer.zero_grad(set_to_none=True)
+                continue
+
             # Backward
             self.optimizer.zero_grad()
             self.scaler.scale(total_loss).backward()
