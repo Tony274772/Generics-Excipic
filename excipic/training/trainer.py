@@ -25,6 +25,7 @@ from ..losses.ranking_loss import ListNetLoss
 from ..losses.asymmetric_bce import AsymmetricBCELoss
 from ..metrics.evaluation import ExcipicEvaluator
 from .scheduler import get_cosine_warmup_scheduler
+from tqdm import tqdm
 
 logger = logging.getLogger(__name__)
 
@@ -154,7 +155,8 @@ class ExcipicTrainer:
         num_batches = 0
         batch_times = []
 
-        for batch_idx, batch in enumerate(train_loader):
+        pbar = tqdm(train_loader, desc=f"Epoch {self.current_epoch}", leave=False)
+        for batch_idx, batch in enumerate(pbar):
             batch_start = time.time()
             # Move to device
             batch = self._to_device(batch)
@@ -231,6 +233,8 @@ class ExcipicTrainer:
             
             batch_time = time.time() - batch_start
             batch_times.append(batch_time)
+            
+            pbar.set_postfix({"loss": f"{total_loss.item():.4f}"})
 
         # Average losses
         for key in epoch_losses:
@@ -328,10 +332,6 @@ class ExcipicTrainer:
             train_losses = self.train_epoch(train_loader)
             train_time = time.time() - epoch_start
             epoch_times.append(train_time)
-
-            logger.info(
-                f"[Epoch {self.current_epoch}/{num_epochs}] Loss: {train_losses['total']:.4f} | {train_time:.1f}s"
-            )
 
             # Evaluate
             if (epoch + 1) % self.train_config.eval_interval == 0:

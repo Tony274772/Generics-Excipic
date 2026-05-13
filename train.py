@@ -140,10 +140,16 @@ def main():
     )
 
     tc = config.training
+    
+    def worker_init_fn(worker_id):
+        from rdkit import RDLogger
+        RDLogger.DisableLog('rdApp.*')
+        
     train_loader = DataLoader(
         train_dataset, batch_size=tc.batch_size, shuffle=True,
         collate_fn=collate_fn, num_workers=tc.num_workers,
         pin_memory=tc.pin_memory, drop_last=True,
+        worker_init_fn=worker_init_fn
     )
     val_loader = DataLoader(
         val_dataset, batch_size=tc.batch_size, shuffle=False,
