@@ -85,8 +85,9 @@ class ExcipicDataset(Dataset):
             form["api_features_normalized"], dtype=torch.float
         )
 
-        # 4. API raw features (for property prediction targets)
-        api_targets = torch.tensor(form["api_features"], dtype=torch.float)
+        # 4. API normalized features (for property prediction targets)
+        # Using raw features causes MSE loss to be extremely high (~4800) due to large values like MolWt
+        api_targets = torch.tensor(form["api_features_normalized"], dtype=torch.float)
 
         # 5. Target excipient sequence (for autoregressive decoder)
         exc_indices = form["excipient_indices"]

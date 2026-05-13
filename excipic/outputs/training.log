@@ -181,3 +181,22 @@
 2026-05-13 10:24:22,677 [INFO] excipic.training.trainer:   [450/514] Step 964 | Loss: nan (R:6.8948 B:nan P:57811.8008) | LR: 3.75e-05 | Time: 0.21s/batch | GPU Mem: 541MB/1238MB (Peak: 987MB)
 2026-05-13 10:24:32,064 [INFO] excipic.training.trainer:   [500/514] Step 1014 | Loss: nan (R:6.8871 B:nan P:48534.6211) | LR: 3.95e-05 | Time: 0.19s/batch | GPU Mem: 542MB/1238MB (Peak: 987MB)
 2026-05-13 10:24:35,551 [INFO] excipic.training.trainer: 📈 Train Summary | Loss: nan (Ranking:6.8732 BCE:nan Property:49729.6067) | Epoch Time: 144.9s
+2026-05-13 12:30:04,517 [INFO] excipic.train: EXCIPIC Training | Device: NVIDIA GeForce RTX 4050 Laptop GPU | Batch: 16 | Epochs: 2
+2026-05-13 12:30:04,517 [INFO] excipic.data.preprocessing: Loading cached preprocessed data from C:\Users\pardhu\Desktop\g2\excipic\outputs\preprocessed_cache.pkl
+2026-05-13 12:30:04,596 [INFO] excipic.data.preprocessing: Loaded cache: train=8238, val=1030, test=1016
+2026-05-13 12:30:04,596 [INFO] excipic.train: DEBUG MODE: using small data subset
+2026-05-13 12:30:04,596 [INFO] excipic.train: Data loaded | Train: 100 | Val: 50 | Test: 50
+2026-05-13 12:30:04,596 [INFO] excipic.train: Val batches:   4
+2026-05-13 12:30:04,598 [INFO] excipic.train: Test batches:  4
+2026-05-13 12:30:04,598 [INFO] excipic.train: 
+── Step 3: Building Model ──
+2026-05-13 12:30:05,265 [INFO] excipic.models.excipient_embedder: Building excipient embeddings...
+2026-05-13 12:30:07,793 [INFO] excipic.models.excipient_embedder: Built embeddings: 418 via SMILES, 533 via Word2Vec, 3 special tokens (total 954)
+2026-05-13 12:30:07,796 [INFO] excipic.models.excipient_graph: Excipient graph: 954 nodes, 46308 edges (threshold=0.0)
+2026-05-13 12:30:07,820 [INFO] excipic.models.excipic_model: Model initialized successfully
+2026-05-13 12:30:07,823 [INFO] excipic.train: Model initialized | Params: 67,293,461 (67,293,461 trainable)
+
+2026-05-13 12:30:07,824 [INFO] excipic.training.trainer: Optimizer: AdamW with 6 param groups, warmup=0/12 steps
+2026-05-13 12:30:07,824 [INFO] excipic.training.trainer: Starting training: 2 epochs, 12 total steps | Early stop patience: 10
+
+2026-05-13 12:30:40,136 [INFO] excipic.training.trainer: [Epoch 1/2] Loss: 4.0223 | 32.3s

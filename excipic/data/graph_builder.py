@@ -7,9 +7,12 @@ with atom node features and bond edge features.
 import numpy as np
 import torch
 from rdkit import Chem
+from rdkit import RDLogger
 from rdkit.Chem import Descriptors, rdMolDescriptors
 from torch_geometric.data import Data
 
+# Suppress RDKit warnings like "WARNING: not removing hydrogen atom without neighbors"
+RDLogger.DisableLog('rdApp.*')
 
 # ── Atom feature extraction ──────────────────────────────────────────────────
 
