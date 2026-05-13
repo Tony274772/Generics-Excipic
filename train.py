@@ -106,61 +106,16 @@ def main():
     if torch.cuda.is_available():
         torch.cuda.manual_seed_all(args.seed)
 
-    logger.info("=" * 80)
-    logger.info("  EXCIPIC — Pharmaceutical Excipient Recommendation System")
-    logger.info("=" * 80)
-    
-    # ────────── DEVICE INFORMATION ──────────
+    # Minimal startup info
     device_info = _get_device_info()
-    logger.info(f"\n🖥️  DEVICE INFORMATION:")
-    logger.info(f"   Device Type: {device_info['device_type']}")
-    logger.info(f"   Device Name: {device_info['device_name']}")
-    if device_info['device_type'] == 'GPU':
-        logger.info(f"   GPU Memory: {device_info['total_memory_gb']:.2f} GB")
-        logger.info(f"   Compute Capability: {device_info['compute_capability']}")
-        logger.info(f"   Mixed Precision: {device_info['amp_dtype']}")
-        if device_info['is_rtx_4050']:
-            logger.info(f"   ✓ RTX 4050 Detected!")
-        else:
-            logger.warning(f"   ⚠ Not RTX 4050 (configured for RTX 4050)")
-    else:
-        logger.warning(f"   ⚠ CPU Mode - Training will be SLOW. GPU recommended!")
-    
-    # ────────── TRAINING CONFIGURATION ──────────
-    logger.info(f"\n⚙️  TRAINING CONFIGURATION:")
-    logger.info(f"   Batch size: {config.training.batch_size}")
-    logger.info(f"   Epochs: {config.training.num_epochs}")
-    logger.info(f"   Patience (Early Stop): {config.training.patience} epochs")
-    logger.info(f"   Primary Metric: {config.training.primary_metric}")
-    logger.info(f"   Loss Weights: Ranking={config.training.ranking_loss_weight}, "
-                f"BCE={config.training.bce_loss_weight}, "
-                f"Property={config.training.property_loss_weight}")
-    logger.info(f"   Learning Rates: "
-                f"Mol={config.training.lr_molecular_encoder:.0e}, "
-                f"Dosage={config.training.lr_dosage_encoder:.0e}, "
-                f"Fusion={config.training.lr_fusion:.0e}, "
-                f"Decoder={config.training.lr_decoder:.0e}, "
-                f"PropHead={config.training.lr_property_head:.0e}, "
-                f"Graph={config.training.lr_excipient_graph:.0e}")
-    logger.info("=" * 80)
+    logger.info(f"EXCIPIC Training | Device: {device_info['device_name']} | Batch: {config.training.batch_size} | Epochs: {config.training.num_epochs}")
 
-    # ── 1. Preprocess data ─────────────────────────────────────────────────
-    logger.info("\n── Step 1: Preprocessing ──")
+    # ── Data Loading ──
     cache_path = os.path.join(config.paths.output_dir, "preprocessed_cache.pkl")
-
     preprocessor = ExcipicPreprocessor(config)
     train_formulations, val_formulations, test_formulations = preprocessor.preprocess(
         cache_path=cache_path
     )
-
-    logger.info(f"Excipient vocabulary size: {preprocessor.num_excipients}")
-    logger.info(f"Dosage form vocabulary size: {preprocessor.num_dosage_forms}")
-    logger.info(f"Train: {len(train_formulations)}")
-    logger.info(f"Val:   {len(val_formulations)}")
-    logger.info(f"Test:  {len(test_formulations)}")
-
-    # ── 2. Create datasets and dataloaders ─────────────────────────────────
-    logger.info("\n── Step 2: Creating Datasets ──")
 
     if args.debug:
         train_formulations = train_formulations[:100]
@@ -201,7 +156,7 @@ def main():
         pin_memory=tc.pin_memory,
     )
 
-    logger.info(f"Train batches: {len(train_loader)}")
+    logger.info(f"Data loaded | Train: {len(train_formulations)} | Val: {len(val_formulations)} | Test: {len(test_formulations)}")
     logger.info(f"Val batches:   {len(val_loader)}")
     logger.info(f"Test batches:  {len(test_loader)}")
 
@@ -224,11 +179,7 @@ def main():
     # Count parameters
     total_params = sum(p.numel() for p in model.parameters())
     trainable_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
-    logger.info(f"Total parameters:     {total_params:,}")
-    logger.info(f"Trainable parameters: {trainable_params:,}")
-
-    # ── 4. Train ───────────────────────────────────────────────────────────
-    logger.info("\n── Step 4: Training ──")
+    logger.info(f"Model initialized | Params: {total_params:,} ({trainable_params:,} trainable)\n")
 
     trainer = ExcipicTrainer(model, config, preprocessor)
 
@@ -240,21 +191,13 @@ def main():
     best_metrics = trainer.train(train_loader, val_loader)
     total_time = time.time() - start_time
 
-    logger.info(f"\nTraining completed in {total_time / 60:.1f} minutes")
-    logger.info(f"Best validation metrics:")
-    for key, val in sorted(best_metrics.items()):
-        logger.info(f"  {key}: {val:.4f}")
-
-    # ── 5. Test evaluation ─────────────────────────────────────────────────
-    logger.info("\n── Step 5: Test Evaluation ──")
+    logger.info(f"\n✓ Training completed in {total_time / 60:.1f} minutes\n")
 
     # Load best model
     trainer.load_checkpoint("best_model.pt")
     test_metrics = trainer.evaluate(test_loader)
 
-    logger.info(f"\nTest set metrics:")
-    for key, val in sorted(test_metrics.items()):
-        logger.info(f"  {key}: {val:.4f}")
+    logger.info(f"Test metrics | NDCG@10: {test_metrics.get('ndcg_at_10', 0):.4f} | Recall@10: {test_metrics.get('recall_at_10', 0):.4f} | Hit@10: {test_metrics.get('hit_at_10', 0):.4f}")
 
     # Save final results
     import json

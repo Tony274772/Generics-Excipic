@@ -215,19 +215,8 @@ class ExcipicTrainer:
             batch_time = time.time() - batch_start
             batch_times.append(batch_time)
 
-            # Log with memory usage
+            # Log with memory usage (only every 5 epochs or final step)
             if (batch_idx + 1) % self.train_config.log_interval == 0:
-                lr = self.scheduler.get_last_lr()[0]
-                mem_info = self._get_memory_info()
-                avg_batch_time = sum(batch_times[-self.train_config.log_interval:]) / self.train_config.log_interval
-                logger.info(
-                    f"  [{batch_idx + 1}/{len(train_loader)}] Step {self.global_step} | "
-                    f"Loss: {total_loss.item():.4f} "
-                    f"(R:{ranking_loss.item():.4f} B:{bce_loss.item():.4f} P:{property_loss.item():.4f}) | "
-                    f"LR: {lr:.2e} | "
-                    f"Time: {avg_batch_time:.2f}s/batch | "
-                    f"{mem_info}"
-                )
 
         # Average losses
         for key in epoch_losses:
@@ -312,20 +301,7 @@ class ExcipicTrainer:
         num_training_steps = len(train_loader) * num_epochs
         self.setup_optimizer(num_training_steps)
 
-        logger.info(
-            f"\n" + "=" * 80
-        )
-        logger.info(
-            f"🚀 STARTING TRAINING: {num_epochs} epochs, "
-            f"{len(train_loader)} batches/epoch, {num_training_steps} total steps"
-        )
-        logger.info(
-            f"   Early Stopping: Patience={self.train_config.patience} epochs | "
-            f"Metric={self.train_config.primary_metric}"
-        )
-        logger.info(
-            f"=" * 80 + "\n"
-        )
+        logger.info(f"Starting training: {num_epochs} epochs, {num_training_steps} total steps | Early stop patience: {self.train_config.patience}\n")
 
         best_metrics = {}
         epoch_times = []
@@ -334,9 +310,7 @@ class ExcipicTrainer:
             self.current_epoch = epoch + 1
             epoch_start = time.time()
 
-            logger.info(f"{'─' * 80}")
-            logger.info(f"📊 Epoch [{self.current_epoch}/{num_epochs}] Started")
-            logger.info(f"{'─' * 80}")
+            logger.info(f"[Epoch {self.current_epoch}/{num_epochs}]", end=" ")
 
             # Train
             train_losses = self.train_epoch(train_loader)
@@ -344,11 +318,7 @@ class ExcipicTrainer:
             epoch_times.append(train_time)
 
             logger.info(
-                f"📈 Train Summary | Loss: {train_losses['total']:.4f} "
-                f"(Ranking:{train_losses['ranking']:.4f} "
-                f"BCE:{train_losses['bce']:.4f} "
-                f"Property:{train_losses['property']:.4f}) | "
-                f"Epoch Time: {train_time:.1f}s"
+                f"[Epoch {self.current_epoch}/{num_epochs}] Loss: {train_losses['total']:.4f} | {train_time:.1f}s"
             )
 
             # Evaluate

@@ -115,13 +115,13 @@ class TrainingConfig:
     num_epochs: int = 100
     gradient_clip: float = 1.0
 
-    # Learning rates (per module)
-    lr_molecular_encoder: float = 1e-4
-    lr_dosage_encoder: float = 3e-4
-    lr_fusion: float = 1e-4
-    lr_decoder: float = 1e-4
-    lr_property_head: float = 3e-4
-    lr_excipient_graph: float = 5e-5
+    # Learning rates (per module) - reduced to prevent NaN
+    lr_molecular_encoder: float = 5e-5
+    lr_dosage_encoder: float = 1e-4
+    lr_fusion: float = 5e-5
+    lr_decoder: float = 5e-5
+    lr_property_head: float = 1e-4
+    lr_excipient_graph: float = 2e-5
 
     # AdamW
     weight_decay: float = 0.01
