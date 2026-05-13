@@ -6,6 +6,7 @@ Uses different focusing parameters for positive and negative samples.
 """
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 
 
 class AsymmetricBCELoss(nn.Module):
@@ -48,7 +49,13 @@ class AsymmetricBCELoss(nn.Module):
         Returns:
             Scalar loss.
         """
-        # Sigmoid probabilities
+        # Sanitize inputs to avoid NaNs/Infs propagating through BCE math.
+        targets = torch.nan_to_num(targets.float(), nan=0.0, posinf=1.0, neginf=0.0)
+        targets = targets.clamp_(0.0, 1.0)
+        logits = torch.nan_to_num(logits, nan=0.0, posinf=30.0, neginf=-30.0)
+        logits = logits.clamp(-30.0, 30.0)
+
+        # Sigmoid probabilities (safe due to logits clamping)
         probs = torch.sigmoid(logits)
         probs_pos = probs
         probs_neg = 1 - probs
@@ -57,14 +64,16 @@ class AsymmetricBCELoss(nn.Module):
         if self.clip > 0:
             probs_neg = (probs_neg + self.clip).clamp(max=1.0)
 
-        # Basic cross-entropy terms
-        loss_pos = targets * torch.log(probs_pos.clamp(min=self.eps))
-        loss_neg = (1 - targets) * torch.log(probs_neg.clamp(min=self.eps))
+        # Numerically stable BCE terms.
+        # log(sigmoid(x)) = -softplus(-x), log(1-sigmoid(x)) = -softplus(x)
+        log_p = -F.softplus(-logits)
+        log_1m_p = torch.log(probs_neg.clamp(min=self.eps))
+        loss_pos = targets * log_p
+        loss_neg = (1 - targets) * log_1m_p
 
         # Asymmetric focusing
         if self.gamma_pos > 0:
             # Focus on hard positives (low probability)
-            pt_pos = probs_pos * targets + (1 - probs_pos) * (1 - targets)
             focal_weight_pos = (1 - probs_pos).pow(self.gamma_pos)
             loss_pos = loss_pos * focal_weight_pos
 
