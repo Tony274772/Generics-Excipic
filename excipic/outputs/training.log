@@ -1,0 +1,183 @@
+2026-05-13 10:12:05,695 [INFO] excipic.train: ================================================================================
+2026-05-13 10:12:05,695 [INFO] excipic.train:   EXCIPIC � Pharmaceutical Excipient Recommendation System
+2026-05-13 10:12:05,696 [INFO] excipic.train: ================================================================================
+2026-05-13 10:12:05,710 [INFO] excipic.train:    Device Type: GPU
+2026-05-13 10:12:05,710 [INFO] excipic.train:    Device Name: NVIDIA GeForce RTX 4050 Laptop GPU
+2026-05-13 10:12:05,712 [INFO] excipic.train:    GPU Memory: 6.00 GB
+2026-05-13 10:12:05,713 [INFO] excipic.train:    Compute Capability: 8.9
+2026-05-13 10:12:05,713 [INFO] excipic.train:    Mixed Precision: float16
+2026-05-13 10:12:05,721 [INFO] excipic.train:    Batch size: 16
+2026-05-13 10:12:05,721 [INFO] excipic.train:    Epochs: 100
+2026-05-13 10:12:05,721 [INFO] excipic.train:    Patience (Early Stop): 10 epochs
+2026-05-13 10:12:05,721 [INFO] excipic.train:    Primary Metric: ndcg_at_10
+2026-05-13 10:12:05,721 [INFO] excipic.train:    Loss Weights: Ranking=0.6, BCE=0.3, Property=0.1
+2026-05-13 10:12:05,721 [INFO] excipic.train:    Learning Rates: Mol=1e-04, Dosage=3e-04, Fusion=1e-04, Decoder=1e-04, PropHead=3e-04, Graph=5e-05
+2026-05-13 10:12:05,721 [INFO] excipic.train: ================================================================================
+2026-05-13 10:12:05,723 [INFO] excipic.data.preprocessing: Starting preprocessing pipeline...
+2026-05-13 10:12:05,724 [INFO] excipic.data.preprocessing: Loading shared excipient vocabulary from C:\Users\pardhu\Desktop\g2\excipic\excipient_unii_vocab.json
+2026-05-13 10:12:05,727 [INFO] excipic.data.preprocessing: Shared vocab: 950 excipients, pad_idx=0, built_from=train.csv
+2026-05-13 10:12:05,728 [INFO] excipic.data.preprocessing: Vocab loaded: 954 total entries (PAD=0, excipients=1..950, BOS=951, EOS=952)
+2026-05-13 10:12:05,728 [INFO] excipic.data.preprocessing: Loading train: C:\Users\pardhu\Desktop\g2\Data\train.csv
+2026-05-13 10:12:05,801 [INFO] excipic.data.preprocessing:   train: 8238 rows
+2026-05-13 10:12:05,801 [INFO] excipic.data.preprocessing: Loading val: C:\Users\pardhu\Desktop\g2\Data\val.csv
+2026-05-13 10:12:05,821 [INFO] excipic.data.preprocessing:   val: 1030 rows
+2026-05-13 10:12:05,821 [INFO] excipic.data.preprocessing: Loading test: C:\Users\pardhu\Desktop\g2\Data\test.csv
+2026-05-13 10:12:05,840 [INFO] excipic.data.preprocessing:   test: 1016 rows
+2026-05-13 10:12:05,842 [INFO] excipic.data.preprocessing: Building dosage form vocabulary...
+2026-05-13 10:12:05,850 [INFO] excipic.data.preprocessing: Dosage form vocabulary: 55 forms
+2026-05-13 10:12:05,851 [INFO] excipic.data.preprocessing: Loading API features from C:\Users\pardhu\Desktop\g2\Data\api_features.csv
+2026-05-13 10:12:06,114 [INFO] excipic.data.preprocessing: Loaded features for 1056 APIs, 20 descriptors
+2026-05-13 10:12:06,114 [INFO] excipic.data.preprocessing: Loading excipient SMILES from C:\Users\pardhu\Desktop\g2\Data\excipinets_Smiles.csv
+2026-05-13 10:12:06,172 [INFO] excipic.data.preprocessing: Excipient SMILES: 418 with SMILES (of 702 unique UNIIs in vocab)
+2026-05-13 10:12:06,173 [INFO] excipic.data.preprocessing: Building excipient co-occurrence matrix...
+2026-05-13 10:12:08,041 [INFO] excipic.data.preprocessing: Computing PMI matrix...
+2026-05-13 10:12:09,046 [INFO] excipic.data.preprocessing: Co-occurrence matrix: 954x954, non-zero PMI edges: 23154
+2026-05-13 10:12:09,046 [INFO] excipic.data.preprocessing: Training Word2Vec on excipient co-occurrences...
+2026-05-13 10:12:09,137 [INFO] gensim.models.word2vec: collecting all words and their counts
+2026-05-13 10:12:09,137 [INFO] gensim.models.word2vec: PROGRESS: at sentence #0, processed 0 words, keeping 0 word types
+2026-05-13 10:12:09,149 [INFO] gensim.models.word2vec: collected 949 word types from a corpus of 79753 raw words and 8215 sentences
+2026-05-13 10:12:09,149 [INFO] gensim.models.word2vec: Creating a fresh vocabulary
+2026-05-13 10:12:09,182 [INFO] gensim.utils: Word2Vec lifecycle event {'msg': 'effective_min_count=1 retains 949 unique words (100.00% of original 949, drops 0)', 'datetime': '2026-05-13T10:12:09.153001', 'gensim': '4.3.3', 'python': '3.12.7 | packaged by Anaconda, Inc. | (main, Oct  4 2024, 13:17:27) [MSC v.1929 64 bit (AMD64)]', 'platform': 'Windows-11-10.0.26200-SP0', 'event': 'prepare_vocab'}
+2026-05-13 10:12:09,182 [INFO] gensim.utils: Word2Vec lifecycle event {'msg': 'effective_min_count=1 leaves 79753 word corpus (100.00% of original 79753, drops 0)', 'datetime': '2026-05-13T10:12:09.182187', 'gensim': '4.3.3', 'python': '3.12.7 | packaged by Anaconda, Inc. | (main, Oct  4 2024, 13:17:27) [MSC v.1929 64 bit (AMD64)]', 'platform': 'Windows-11-10.0.26200-SP0', 'event': 'prepare_vocab'}
+2026-05-13 10:12:09,186 [INFO] gensim.models.word2vec: deleting the raw counts dictionary of 949 items
+2026-05-13 10:12:09,186 [INFO] gensim.models.word2vec: sample=0.001 downsamples 66 most-common words
+2026-05-13 10:12:09,187 [INFO] gensim.utils: Word2Vec lifecycle event {'msg': 'downsampling leaves estimated 35749.113484102025 word corpus (44.8%% of prior 79753)', 'datetime': '2026-05-13T10:12:09.187532', 'gensim': '4.3.3', 'python': '3.12.7 | packaged by Anaconda, Inc. | (main, Oct  4 2024, 13:17:27) [MSC v.1929 64 bit (AMD64)]', 'platform': 'Windows-11-10.0.26200-SP0', 'event': 'prepare_vocab'}
+2026-05-13 10:12:09,193 [INFO] gensim.models.word2vec: estimated required memory for 949 words and 128 dimensions: 1446276 bytes
+2026-05-13 10:12:09,193 [INFO] gensim.models.word2vec: resetting layer weights
+2026-05-13 10:12:09,195 [INFO] gensim.utils: Word2Vec lifecycle event {'update': False, 'trim_rule': 'None', 'datetime': '2026-05-13T10:12:09.195571', 'gensim': '4.3.3', 'python': '3.12.7 | packaged by Anaconda, Inc. | (main, Oct  4 2024, 13:17:27) [MSC v.1929 64 bit (AMD64)]', 'platform': 'Windows-11-10.0.26200-SP0', 'event': 'build_vocab'}
+2026-05-13 10:12:09,195 [INFO] gensim.utils: Word2Vec lifecycle event {'msg': 'training model with 4 workers on 949 vocabulary and 128 features, using sg=0 hs=0 sample=0.001 negative=5 window=5 shrink_windows=True', 'datetime': '2026-05-13T10:12:09.195571', 'gensim': '4.3.3', 'python': '3.12.7 | packaged by Anaconda, Inc. | (main, Oct  4 2024, 13:17:27) [MSC v.1929 64 bit (AMD64)]', 'platform': 'Windows-11-10.0.26200-SP0', 'event': 'train'}
+2026-05-13 10:12:09,238 [INFO] gensim.models.word2vec: EPOCH 0: training on 79753 raw words (35807 effective words) took 0.0s, 1238088 effective words/s
+2026-05-13 10:12:09,273 [INFO] gensim.models.word2vec: EPOCH 1: training on 79753 raw words (35661 effective words) took 0.0s, 1722795 effective words/s
+2026-05-13 10:12:09,302 [INFO] gensim.models.word2vec: EPOCH 2: training on 79753 raw words (35634 effective words) took 0.0s, 1939318 effective words/s
+2026-05-13 10:12:09,332 [INFO] gensim.models.word2vec: EPOCH 3: training on 79753 raw words (35693 effective words) took 0.0s, 1556098 effective words/s
+2026-05-13 10:12:09,361 [INFO] gensim.models.word2vec: EPOCH 4: training on 79753 raw words (35879 effective words) took 0.0s, 1656234 effective words/s
+2026-05-13 10:12:09,388 [INFO] gensim.models.word2vec: EPOCH 5: training on 79753 raw words (35672 effective words) took 0.0s, 1745410 effective words/s
+2026-05-13 10:12:09,420 [INFO] gensim.models.word2vec: EPOCH 6: training on 79753 raw words (35754 effective words) took 0.0s, 1583149 effective words/s
+2026-05-13 10:12:09,449 [INFO] gensim.models.word2vec: EPOCH 7: training on 79753 raw words (35839 effective words) took 0.0s, 1627145 effective words/s
+2026-05-13 10:12:09,479 [INFO] gensim.models.word2vec: EPOCH 8: training on 79753 raw words (35863 effective words) took 0.0s, 1619587 effective words/s
+2026-05-13 10:12:09,509 [INFO] gensim.models.word2vec: EPOCH 9: training on 79753 raw words (35708 effective words) took 0.0s, 1623076 effective words/s
+2026-05-13 10:12:09,539 [INFO] gensim.models.word2vec: EPOCH 10: training on 79753 raw words (35879 effective words) took 0.0s, 1582315 effective words/s
+2026-05-13 10:12:09,569 [INFO] gensim.models.word2vec: EPOCH 11: training on 79753 raw words (35783 effective words) took 0.0s, 1634920 effective words/s
+2026-05-13 10:12:09,601 [INFO] gensim.models.word2vec: EPOCH 12: training on 79753 raw words (35920 effective words) took 0.0s, 1512415 effective words/s
+2026-05-13 10:12:09,633 [INFO] gensim.models.word2vec: EPOCH 13: training on 79753 raw words (35525 effective words) took 0.0s, 1491588 effective words/s
+2026-05-13 10:12:09,666 [INFO] gensim.models.word2vec: EPOCH 14: training on 79753 raw words (35740 effective words) took 0.0s, 1530405 effective words/s
+2026-05-13 10:12:09,698 [INFO] gensim.models.word2vec: EPOCH 15: training on 79753 raw words (35663 effective words) took 0.0s, 1445526 effective words/s
+2026-05-13 10:12:09,732 [INFO] gensim.models.word2vec: EPOCH 16: training on 79753 raw words (35671 effective words) took 0.0s, 1399022 effective words/s
+2026-05-13 10:12:09,763 [INFO] gensim.models.word2vec: EPOCH 17: training on 79753 raw words (35710 effective words) took 0.0s, 1482819 effective words/s
+2026-05-13 10:12:09,795 [INFO] gensim.models.word2vec: EPOCH 18: training on 79753 raw words (35702 effective words) took 0.0s, 1541031 effective words/s
+2026-05-13 10:12:09,827 [INFO] gensim.models.word2vec: EPOCH 19: training on 79753 raw words (35790 effective words) took 0.0s, 1544783 effective words/s
+2026-05-13 10:12:09,859 [INFO] gensim.models.word2vec: EPOCH 20: training on 79753 raw words (35733 effective words) took 0.0s, 1460200 effective words/s
+2026-05-13 10:12:09,890 [INFO] gensim.models.word2vec: EPOCH 21: training on 79753 raw words (35666 effective words) took 0.0s, 1531420 effective words/s
+2026-05-13 10:12:09,920 [INFO] gensim.models.word2vec: EPOCH 22: training on 79753 raw words (35800 effective words) took 0.0s, 1643227 effective words/s
+2026-05-13 10:12:09,949 [INFO] gensim.models.word2vec: EPOCH 23: training on 79753 raw words (35744 effective words) took 0.0s, 1706557 effective words/s
+2026-05-13 10:12:09,981 [INFO] gensim.models.word2vec: EPOCH 24: training on 79753 raw words (35841 effective words) took 0.0s, 1528440 effective words/s
+2026-05-13 10:12:10,012 [INFO] gensim.models.word2vec: EPOCH 25: training on 79753 raw words (35643 effective words) took 0.0s, 1540446 effective words/s
+2026-05-13 10:12:10,042 [INFO] gensim.models.word2vec: EPOCH 26: training on 79753 raw words (35805 effective words) took 0.0s, 1595304 effective words/s
+2026-05-13 10:12:10,069 [INFO] gensim.models.word2vec: EPOCH 27: training on 79753 raw words (35598 effective words) took 0.0s, 1782752 effective words/s
+2026-05-13 10:12:10,098 [INFO] gensim.models.word2vec: EPOCH 28: training on 79753 raw words (35815 effective words) took 0.0s, 1704291 effective words/s
+2026-05-13 10:12:10,126 [INFO] gensim.models.word2vec: EPOCH 29: training on 79753 raw words (35688 effective words) took 0.0s, 1749035 effective words/s
+2026-05-13 10:12:10,126 [INFO] gensim.utils: Word2Vec lifecycle event {'msg': 'training on 2392590 raw words (1072226 effective words) took 0.9s, 1152590 effective words/s', 'datetime': '2026-05-13T10:12:10.126086', 'gensim': '4.3.3', 'python': '3.12.7 | packaged by Anaconda, Inc. | (main, Oct  4 2024, 13:17:27) [MSC v.1929 64 bit (AMD64)]', 'platform': 'Windows-11-10.0.26200-SP0', 'event': 'train'}
+2026-05-13 10:12:10,127 [INFO] gensim.utils: Word2Vec lifecycle event {'params': 'Word2Vec<vocab=949, vector_size=128, alpha=0.025>', 'datetime': '2026-05-13T10:12:10.127085', 'gensim': '4.3.3', 'python': '3.12.7 | packaged by Anaconda, Inc. | (main, Oct  4 2024, 13:17:27) [MSC v.1929 64 bit (AMD64)]', 'platform': 'Windows-11-10.0.26200-SP0', 'event': 'created'}
+2026-05-13 10:12:10,127 [INFO] excipic.data.preprocessing: Word2Vec trained: 949 token embeddings, dim=128
+2026-05-13 10:12:10,128 [INFO] excipic.data.preprocessing: Parsing train formulations...
+2026-05-13 10:12:12,771 [INFO] excipic.data.preprocessing:   train: 8238 valid formulations, skipped 0
+2026-05-13 10:12:12,773 [INFO] excipic.data.preprocessing: Parsing val formulations...
+2026-05-13 10:12:12,967 [INFO] excipic.data.preprocessing:   val: 1030 valid formulations, skipped 0
+2026-05-13 10:12:12,969 [INFO] excipic.data.preprocessing: Parsing test formulations...
+2026-05-13 10:12:13,127 [INFO] excipic.data.preprocessing:   test: 1016 valid formulations, skipped 0
+2026-05-13 10:12:13,127 [INFO] excipic.data.preprocessing: Preprocessing complete: train=8238, val=1030, test=1016, 954 vocab entries (950 excipients + special tokens), 55 dosage forms
+2026-05-13 10:12:13,288 [INFO] excipic.data.preprocessing: Saved cache to C:\Users\pardhu\Desktop\g2\excipic\outputs\preprocessed_cache.pkl
+2026-05-13 10:12:13,290 [INFO] excipic.train: Excipient vocabulary size: 954
+2026-05-13 10:12:13,290 [INFO] excipic.train: Dosage form vocabulary size: 55
+2026-05-13 10:12:13,291 [INFO] excipic.train: Train: 8238
+2026-05-13 10:12:13,291 [INFO] excipic.train: Val:   1030
+2026-05-13 10:12:13,291 [INFO] excipic.train: Test:  1016
+2026-05-13 10:12:13,293 [INFO] excipic.train: Train batches: 514
+2026-05-13 10:12:13,294 [INFO] excipic.train: Val batches:   65
+2026-05-13 10:12:13,294 [INFO] excipic.train: Test batches:  64
+2026-05-13 10:12:13,974 [INFO] excipic.models.excipient_embedder: Building excipient embeddings...
+2026-05-13 10:12:16,978 [INFO] excipic.models.excipient_embedder: Built embeddings: 418 via SMILES, 533 via Word2Vec, 3 special tokens (total 954)
+2026-05-13 10:12:16,994 [INFO] excipic.models.excipient_graph: Excipient graph: 954 nodes, 46308 edges (threshold=0.0)
+2026-05-13 10:19:05,596 [INFO] excipic.train: ================================================================================
+2026-05-13 10:19:05,596 [INFO] excipic.train:   EXCIPIC — Pharmaceutical Excipient Recommendation System
+2026-05-13 10:19:05,596 [INFO] excipic.train: ================================================================================
+2026-05-13 10:19:05,605 [INFO] excipic.train: 
+🖥️  DEVICE INFORMATION:
+2026-05-13 10:19:05,605 [INFO] excipic.train:    Device Type: GPU
+2026-05-13 10:19:05,605 [INFO] excipic.train:    Device Name: NVIDIA GeForce RTX 4050 Laptop GPU
+2026-05-13 10:19:05,605 [INFO] excipic.train:    GPU Memory: 6.00 GB
+2026-05-13 10:19:05,605 [INFO] excipic.train:    Compute Capability: 8.9
+2026-05-13 10:19:05,605 [INFO] excipic.train:    Mixed Precision: float16
+2026-05-13 10:19:05,605 [INFO] excipic.train:    ✓ RTX 4050 Detected!
+2026-05-13 10:19:05,605 [INFO] excipic.train: 
+⚙️  TRAINING CONFIGURATION:
+2026-05-13 10:19:05,605 [INFO] excipic.train:    Batch size: 16
+2026-05-13 10:19:05,606 [INFO] excipic.train:    Epochs: 100
+2026-05-13 10:19:05,606 [INFO] excipic.train:    Patience (Early Stop): 10 epochs
+2026-05-13 10:19:05,606 [INFO] excipic.train:    Primary Metric: ndcg_at_10
+2026-05-13 10:19:05,606 [INFO] excipic.train:    Loss Weights: Ranking=0.6, BCE=0.3, Property=0.1
+2026-05-13 10:19:05,606 [INFO] excipic.train:    Learning Rates: Mol=1e-04, Dosage=3e-04, Fusion=1e-04, Decoder=1e-04, PropHead=3e-04, Graph=5e-05
+2026-05-13 10:19:05,606 [INFO] excipic.train: ================================================================================
+2026-05-13 10:19:05,606 [INFO] excipic.train: 
+── Step 1: Preprocessing ──
+2026-05-13 10:19:05,606 [INFO] excipic.data.preprocessing: Loading cached preprocessed data from C:\Users\pardhu\Desktop\g2\excipic\outputs\preprocessed_cache.pkl
+2026-05-13 10:19:05,652 [INFO] excipic.data.preprocessing: Loaded cache: train=8238, val=1030, test=1016
+2026-05-13 10:19:05,652 [INFO] excipic.train: Excipient vocabulary size: 954
+2026-05-13 10:19:05,652 [INFO] excipic.train: Dosage form vocabulary size: 55
+2026-05-13 10:19:05,652 [INFO] excipic.train: Train: 8238
+2026-05-13 10:19:05,652 [INFO] excipic.train: Val:   1030
+2026-05-13 10:19:05,652 [INFO] excipic.train: Test:  1016
+2026-05-13 10:19:05,654 [INFO] excipic.train: 
+── Step 2: Creating Datasets ──
+2026-05-13 10:19:05,654 [INFO] excipic.train: Train batches: 514
+2026-05-13 10:19:05,654 [INFO] excipic.train: Val batches:   65
+2026-05-13 10:19:05,654 [INFO] excipic.train: Test batches:  64
+2026-05-13 10:19:05,654 [INFO] excipic.train: 
+── Step 3: Building Model ──
+2026-05-13 10:19:06,397 [INFO] excipic.models.excipient_embedder: Building excipient embeddings...
+2026-05-13 10:19:08,803 [INFO] excipic.models.excipient_embedder: Built embeddings: 418 via SMILES, 533 via Word2Vec, 3 special tokens (total 954)
+2026-05-13 10:19:08,813 [INFO] excipic.models.excipient_graph: Excipient graph: 954 nodes, 46308 edges (threshold=0.0)
+2026-05-13 10:19:08,843 [INFO] excipic.models.excipic_model: Model initialized successfully
+2026-05-13 10:19:08,845 [INFO] excipic.train: Total parameters:     67,293,461
+2026-05-13 10:19:08,845 [INFO] excipic.train: Trainable parameters: 67,293,461
+2026-05-13 10:19:08,845 [INFO] excipic.train: 
+── Step 4: Training ──
+2026-05-13 10:19:08,847 [INFO] excipic.training.trainer: Optimizer: AdamW with 6 param groups, warmup=2570/51400 steps
+2026-05-13 10:19:08,847 [INFO] excipic.training.trainer: 
+================================================================================
+2026-05-13 10:19:08,847 [INFO] excipic.training.trainer: 🚀 STARTING TRAINING: 100 epochs, 514 batches/epoch, 51400 total steps
+2026-05-13 10:19:08,847 [INFO] excipic.training.trainer:    Early Stopping: Patience=10 epochs | Metric=ndcg_at_10
+2026-05-13 10:19:08,847 [INFO] excipic.training.trainer: ================================================================================
+
+2026-05-13 10:19:08,848 [INFO] excipic.training.trainer: ────────────────────────────────────────────────────────────────────────────────
+2026-05-13 10:19:08,849 [INFO] excipic.training.trainer: 📊 Epoch [1/100] Started
+2026-05-13 10:19:08,849 [INFO] excipic.training.trainer: ────────────────────────────────────────────────────────────────────────────────
+2026-05-13 10:19:46,298 [INFO] excipic.training.trainer:   [50/514] Step 50 | Loss: nan (R:6.8808 B:nan P:49236.3047) | LR: 1.95e-06 | Time: 0.19s/batch | GPU Mem: 545MB/1140MB (Peak: 948MB)
+2026-05-13 10:19:54,344 [INFO] excipic.training.trainer:   [100/514] Step 100 | Loss: nan (R:6.8779 B:nan P:38522.9727) | LR: 3.89e-06 | Time: 0.16s/batch | GPU Mem: 542MB/1142MB (Peak: 948MB)
+2026-05-13 10:20:01,553 [INFO] excipic.training.trainer:   [150/514] Step 150 | Loss: nan (R:6.8714 B:nan P:42985.2461) | LR: 5.84e-06 | Time: 0.14s/batch | GPU Mem: 543MB/1144MB (Peak: 948MB)
+2026-05-13 10:20:10,090 [INFO] excipic.training.trainer:   [200/514] Step 200 | Loss: nan (R:6.8736 B:nan P:39721.2891) | LR: 7.78e-06 | Time: 0.17s/batch | GPU Mem: 539MB/1144MB (Peak: 948MB)
+2026-05-13 10:20:19,118 [INFO] excipic.training.trainer:   [250/514] Step 250 | Loss: nan (R:6.8549 B:nan P:64100.8125) | LR: 9.73e-06 | Time: 0.18s/batch | GPU Mem: 540MB/1144MB (Peak: 962MB)
+2026-05-13 10:20:28,206 [INFO] excipic.training.trainer:   [300/514] Step 300 | Loss: nan (R:6.8408 B:nan P:56125.0938) | LR: 1.17e-05 | Time: 0.18s/batch | GPU Mem: 545MB/1144MB (Peak: 962MB)
+2026-05-13 10:20:36,398 [INFO] excipic.training.trainer:   [350/514] Step 350 | Loss: nan (R:6.8784 B:nan P:33162.8438) | LR: 1.36e-05 | Time: 0.16s/batch | GPU Mem: 539MB/1144MB (Peak: 962MB)
+2026-05-13 10:20:53,069 [INFO] excipic.training.trainer:   [400/514] Step 400 | Loss: nan (R:6.8750 B:nan P:53943.5430) | LR: 1.56e-05 | Time: 0.33s/batch | GPU Mem: 548MB/1144MB (Peak: 962MB)
+2026-05-13 10:20:59,829 [INFO] excipic.training.trainer:   [450/514] Step 450 | Loss: nan (R:6.8511 B:nan P:39603.0898) | LR: 1.75e-05 | Time: 0.13s/batch | GPU Mem: 540MB/1144MB (Peak: 962MB)
+2026-05-13 10:21:12,896 [INFO] excipic.training.trainer:   [500/514] Step 500 | Loss: nan (R:6.8881 B:nan P:18817.3477) | LR: 1.95e-05 | Time: 0.26s/batch | GPU Mem: 541MB/1144MB (Peak: 963MB)
+2026-05-13 10:21:15,666 [INFO] excipic.training.trainer: 📈 Train Summary | Loss: nan (Ranking:6.8734 BCE:nan Property:49779.1862) | Epoch Time: 126.8s
+2026-05-13 10:22:09,953 [INFO] excipic.training.trainer: ✓ Val Summary | NDCG@10: 0.0016 | Recall@10: 0.0011 | Hit@10: 0.0126 | MRR: 0.0050 | Jaccard@10: 0.0009 | Val Time: 54.3s
+2026-05-13 10:22:10,654 [INFO] excipic.training.trainer: Saved checkpoint: C:\Users\pardhu\Desktop\g2\excipic\outputs\checkpoints\best_model.pt
+2026-05-13 10:22:10,656 [INFO] excipic.training.trainer: ⭐ NEW BEST! ndcg_at_10: 0.0016 (+0.0016) | Checkpoint saved
+2026-05-13 10:22:10,656 [INFO] excipic.training.trainer: ⏱️  Estimated time remaining: 209.2 minutes (99 epochs × 126.8s avg)
+2026-05-13 10:22:10,656 [INFO] excipic.training.trainer: ────────────────────────────────────────────────────────────────────────────────
+2026-05-13 10:22:10,656 [INFO] excipic.training.trainer: 📊 Epoch [2/100] Started
+2026-05-13 10:22:10,657 [INFO] excipic.training.trainer: ────────────────────────────────────────────────────────────────────────────────
+2026-05-13 10:23:11,316 [INFO] excipic.training.trainer:   [50/514] Step 564 | Loss: nan (R:6.8806 B:nan P:44261.0117) | LR: 2.19e-05 | Time: 0.32s/batch | GPU Mem: 545MB/1144MB (Peak: 963MB)
+2026-05-13 10:23:19,320 [INFO] excipic.training.trainer:   [100/514] Step 614 | Loss: nan (R:6.8934 B:nan P:59550.6680) | LR: 2.39e-05 | Time: 0.16s/batch | GPU Mem: 544MB/1144MB (Peak: 963MB)
+2026-05-13 10:23:27,067 [INFO] excipic.training.trainer:   [150/514] Step 664 | Loss: nan (R:6.8522 B:nan P:30854.6191) | LR: 2.58e-05 | Time: 0.15s/batch | GPU Mem: 540MB/1144MB (Peak: 963MB)
+2026-05-13 10:23:35,272 [INFO] excipic.training.trainer:   [200/514] Step 714 | Loss: nan (R:6.8889 B:nan P:43624.0547) | LR: 2.78e-05 | Time: 0.16s/batch | GPU Mem: 545MB/1144MB (Peak: 963MB)
+2026-05-13 10:23:43,930 [INFO] excipic.training.trainer:   [250/514] Step 764 | Loss: nan (R:6.8802 B:nan P:52896.1875) | LR: 2.97e-05 | Time: 0.17s/batch | GPU Mem: 547MB/1144MB (Peak: 963MB)
+2026-05-13 10:23:53,505 [INFO] excipic.training.trainer:   [300/514] Step 814 | Loss: nan (R:6.8813 B:nan P:46720.7656) | LR: 3.17e-05 | Time: 0.19s/batch | GPU Mem: 544MB/1238MB (Peak: 987MB)
+2026-05-13 10:24:02,923 [INFO] excipic.training.trainer:   [350/514] Step 864 | Loss: nan (R:6.8815 B:nan P:40219.1875) | LR: 3.36e-05 | Time: 0.19s/batch | GPU Mem: 544MB/1238MB (Peak: 987MB)
+2026-05-13 10:24:11,988 [INFO] excipic.training.trainer:   [400/514] Step 914 | Loss: nan (R:6.8598 B:nan P:42005.5898) | LR: 3.56e-05 | Time: 0.18s/batch | GPU Mem: 551MB/1238MB (Peak: 987MB)
+2026-05-13 10:24:22,677 [INFO] excipic.training.trainer:   [450/514] Step 964 | Loss: nan (R:6.8948 B:nan P:57811.8008) | LR: 3.75e-05 | Time: 0.21s/batch | GPU Mem: 541MB/1238MB (Peak: 987MB)
+2026-05-13 10:24:32,064 [INFO] excipic.training.trainer:   [500/514] Step 1014 | Loss: nan (R:6.8871 B:nan P:48534.6211) | LR: 3.95e-05 | Time: 0.19s/batch | GPU Mem: 542MB/1238MB (Peak: 987MB)
+2026-05-13 10:24:35,551 [INFO] excipic.training.trainer: 📈 Train Summary | Loss: nan (Ranking:6.8732 BCE:nan Property:49729.6067) | Epoch Time: 144.9s
